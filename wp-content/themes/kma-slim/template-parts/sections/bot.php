@@ -48,8 +48,9 @@ use Includes\Modules\Navwalker\BulmaNavwalker;
                     <p class="copyright">&copy;<?php echo date('Y'); ?> <?php echo get_bloginfo(); ?>. All Rights Reserved.</p>
                 </div>
             </div>
-        </div><!-- .container -->
+        </div>
     </div>
-</div>
-</div>
+</div><!-- sticky footer -->
+</div><!-- app -->
+</div><!-- site wrapper -->
 <?php wp_footer(); ?>

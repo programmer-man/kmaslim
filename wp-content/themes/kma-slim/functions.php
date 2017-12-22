@@ -7,8 +7,10 @@
  */
 
 use Includes\Modules\Leads\Leads;
+use Includes\Modules\SEO\SeoHeaders;
 use Includes\Modules\Helpers\CleanWP;
 use Includes\Modules\Layouts\Layouts;
+use Includes\Modules\SEO\MetaSettings;
 use Includes\Modules\Slider\BulmaSlider;
 use Includes\Modules\Testimonials\Testimonials;
 use Includes\Modules\Social\SocialSettingsPage;
@@ -21,6 +23,9 @@ $socialLinks = new SocialSettingsPage();
 if(is_admin()) {
     $socialLinks->createPage();
 }
+
+$seoHeaders = new SeoHeaders();
+$seoPageFields = new MetaSettings();
 
 $testimonials = new Testimonials();
 $testimonials->createPostType();

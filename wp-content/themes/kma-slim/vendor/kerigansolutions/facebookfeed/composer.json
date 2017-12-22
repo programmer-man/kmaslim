@@ -1,0 +1,19 @@
+{
+    "name": "kerigansolutions/facebookfeed",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "nesbot/carbon": "^1.22"
+    },
+    "autoload": {
+        "psr-4" : {
+            "KeriganSolutions\\FacebookFeed\\" : "src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daron Adkins",
+            "email": "daron.adkins@gmail.com"
+        }
+    ]
+}
