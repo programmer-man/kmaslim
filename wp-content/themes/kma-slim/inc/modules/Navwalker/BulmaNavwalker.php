@@ -34,7 +34,7 @@ class BulmaNavwalker extends \Walker_Nav_Menu {
         $walkerAtts = $args->walker;
         $menuAtts 	= $args->menu;
 
-        //echo '<pre>' . print_r($item) . '</pre>';
+
 
         if ( strcasecmp( $item->description, 'divider' ) == 0 && $depth === 1 ) {
             $output .= '<hr class="navbar-divider">';
@@ -93,10 +93,7 @@ class BulmaNavwalker extends \Walker_Nav_Menu {
         }
     }
     function end_el( &$output, $item, $depth = 0, $args = array() ) {
-//        if( ($item->menu_item_parent == 0 || $args->walker->has_children == 1) || (strcasecmp( $item->attr_title, 'divider' ) == 0 && $depth === 1) || (in_array('button',$item->classes) && $depth <= 1) ){
-//            $output .= "</div>\n";
-//        }
-        if($args->walker->has_children == 1 || (strcasecmp( $item->attr_title, 'divider' ) == 0 ) || $item->menu_item_parent > 0 ) {
+        if( $item->post_content != 'divider' ) {
             $output .= '</div>';
         }
     }
