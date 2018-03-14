@@ -1,185 +1,80 @@
 <template>
-    <div class="full-width-map">
-        <div class="google-map" :id="mapName">
-            <slot></slot>
+    <div>
+        <div class="full-width-map">
+            <div class="google-map" ref="map" :id="mapName">
+                <slot></slot>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import GoogleMap from '../services/google-maps.service.js';
+
     export default {
-        props: [
-            'name',
-            'latitude',
-            'longitude',
-            'zoom'
-        ],
+        props: {
+            name: {
+                type: String,
+                default: this.name
+            },
+            latitude: {
+                type: Number,
+                default: this.latitude
+            },
+            longitude: {
+                type: Number,
+                default: this.longitude
+            },
+            zoom: {
+                type: Number,
+                default: this.zoom
+            },
+            api: {
+                type: String,
+                default: 'AIzaSyCRXeRhZCIYcKhtc-rfHCejAJsEW9rYtt4'
+            }
+        },
 
         data: function () {
             return {
                 mapName: this.name + "-map",
                 markers: [],
-                pins: []
+                config: {},
+                map: {}
             }
         },
 
-        mounted: function () {
-            const element = document.getElementById(this.mapName)
-            const options = {
+        mounted() {
+            this.config = {
                 zoom: this.zoom,
-                center: new google.maps.LatLng(this.latitude,this.longitude),
-                disableDefaultUI: true,
-                zoomControl: true,
-                scaleControl: true,
-                styles: [
-                    {
-                        "featureType": "landscape",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "hue": "#FFBB00"
-                            },
-                            {
-                                "saturation": 43.400000000000006
-                            },
-                            {
-                                "lightness": 37.599999999999994
-                            },
-                            {
-                                "gamma": 1
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "poi",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "hue": "#a0ff00"
-                            },
-                            {
-                                "saturation": "-21"
-                            },
-                            {
-                                "lightness": "35"
-                            },
-                            {
-                                "gamma": 1
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.highway",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "hue": "#ffc200"
-                            },
-                            {
-                                "saturation": -61.8
-                            },
-                            {
-                                "lightness": "7"
-                            },
-                            {
-                                "gamma": 1
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.arterial",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "hue": "#ff0300"
-                            },
-                            {
-                                "saturation": "-100"
-                            },
-                            {
-                                "lightness": "20"
-                            },
-                            {
-                                "gamma": 1
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.local",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "hue": "#ff0300"
-                            },
-                            {
-                                "saturation": -100
-                            },
-                            {
-                                "lightness": "-14"
-                            },
-                            {
-                                "gamma": 1
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "water",
-                        "elementType": "all",
-                        "stylers": [
-                            {
-                                "hue": "#0078ff"
-                            },
-                            {
-                                "saturation": "-65"
-                            },
-                            {
-                                "lightness": "-7"
-                            },
-                            {
-                                "gamma": 1
-                            }
-                        ]
-                    }
-                ]
-            }
-            const map = new google.maps.Map(element, options);
-            const bounds = new google.maps.LatLngBounds();
-            this.markers = this.$children;
-
-            for(var i = 0; i < this.markers.length; i++){
-                var pin = this.markers[i];
-                this.pins.push({
-                    latitude: pin._data.markerCoordinates.latitude,
-                    longitude: pin._data.markerCoordinates.longitude,
-                });
-
-                const position = new google.maps.LatLng(pin.latitude, pin.longitude);
-                const marker = new google.maps.Marker({
-                    position,
-                    map,
-                    icon: '/wp-content/themes/kma-slim/img/map-pin.png'
-                });
-
-                const infowindow = new google.maps.InfoWindow({
-                    maxWidth: 279,
-                    content: pin.$refs.infowindow,
-                    title: pin._data.name
-                });
-
-                marker.addListener('click', function(){
-                    infowindow.open(map, marker);
-                });
-
-                bounds.extend(position);
-                map.fitBounds(bounds);
-
-            }
+                origin: {}, //we don't know this yet
+                mapElement: this.$refs.map,
+                destination: {
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                },
+                directionsButton: this.$refs.directionsButton,
+                directionsPanel: this.$refs.directionsPanel
+            };
+            this.renderMap();
         },
+
+        methods: {
+            renderMap () {
+                let vm = this;
+                new GoogleMap(vm.config, vm.pins, vm.api)
+                  .load()
+                  .then(rendered => {
+                      this.renderedMap = rendered;
+                  });
+            },
+        }
 
     }
 </script>
 <style>
-    .full-width-map {
+    .full-width-map,
+    .google-map {
         height: 100vh;
         width:100%;
     }
