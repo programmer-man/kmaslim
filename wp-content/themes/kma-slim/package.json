@@ -17,6 +17,10 @@
     "vue": "^2.4.2"
   },
   "dependencies": {
+    "autoprefixer": "^8.1.0",
+    "babel-polyfill": "^6.26.0",
+    "glob": "^7.1.2",
+    "purgecss-webpack-plugin": "^0.20.1",
     "vue-parallax-js": "0.0.5",
     "vue-template-compiler": "^2.4.2"
   }
