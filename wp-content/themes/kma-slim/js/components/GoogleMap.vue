@@ -1,6 +1,8 @@
 <template>
-    <div class="google-map" :id="mapName">
-        <slot></slot>
+    <div class="full-width-map">
+        <div class="google-map" :id="mapName">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -176,3 +178,9 @@
 
     }
 </script>
+<style>
+    .full-width-map {
+        height: 100vh;
+        width:100%;
+    }
+</style>

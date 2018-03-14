@@ -20,9 +20,9 @@ class BulmaSlider
     public function createPostType()
     {
         $slider = new CustomPostType('Slide Image', [
-            'supports'           => [ 'title', 'revisions', 'page-attributes' ],
+            'supports'           => ['title', 'revisions', 'page-attributes'],
             'menu_icon'          => 'dashicons-images-alt2',
-            'rewrite'            => [ 'with_front' => false ],
+            'rewrite'            => ['with_front' => false],
             'hierarchical'       => false,
             'has_archive'        => false,
             'menu_position'      => null,
@@ -61,12 +61,13 @@ class BulmaSlider
 
     /**
      * @param slider ( post type category )
+     *
      * @return array
      */
     public function getSlides($category = '')
     {
         $request = [
-            'posts_per_page' => - 1,
+            'posts_per_page' => -1,
             'offset'         => 0,
             'order'          => 'ASC',
             'orderby'        => 'menu_order',
@@ -91,17 +92,17 @@ class BulmaSlider
         $slideArray = [];
         foreach ($slidelist as $slide) {
             array_push($slideArray, [
-                'id'            => (isset($slide->ID)                               ? $slide->ID : null),
-                'name'          => (isset($slide->post_title)                       ? $slide->post_title : null),
-                'slug'          => (isset($slide->post_name)                        ? $slide->post_name : null),
-                'photo'         => (isset($slide->slide_details_photo_file)         ? $slide->slide_details_photo_file : null),
-                'headline'      => (isset($slide->slide_details_headline)           ? $slide->slide_details_headline : null),
-                'caption'       => (isset($slide->slide_details_caption)            ? $slide->slide_details_caption : null),
-                'alt'           => (isset($slide->slide_details_alt_tag)            ? $slide->slide_details_alt_tag : null),
-                'url'           => (isset($slide->slide_details_link)               ? $slide->slide_details_link : null),
-                'target'        => (isset($slide->slide_details_open_in_new_window) ? $slide->slide_details_open_in_new_window : null),
-                'description'   => (isset($slide->photo_description_html)           ? $slide->photo_description_html : null),
-                'link'          => get_permalink($slide->ID),
+                'id'          => (isset($slide->ID) ? $slide->ID : null),
+                'name'        => (isset($slide->post_title) ? $slide->post_title : null),
+                'slug'        => (isset($slide->post_name) ? $slide->post_name : null),
+                'photo'       => (isset($slide->slide_details_photo_file) ? $slide->slide_details_photo_file : null),
+                'headline'    => (isset($slide->slide_details_headline) ? $slide->slide_details_headline : null),
+                'caption'     => (isset($slide->slide_details_caption) ? $slide->slide_details_caption : null),
+                'alt'         => (isset($slide->slide_details_alt_tag) ? $slide->slide_details_alt_tag : null),
+                'url'         => (isset($slide->slide_details_link) ? $slide->slide_details_link : null),
+                'target'      => (isset($slide->slide_details_open_in_new_window) ? $slide->slide_details_open_in_new_window : null),
+                'description' => (isset($slide->photo_description_html) ? $slide->photo_description_html : null),
+                'link'        => get_permalink($slide->ID),
 
             ]);
         }
@@ -111,27 +112,24 @@ class BulmaSlider
 
     /**
      * @param slider ( post type category )
+     *
      * @return HTML
      */
     public function getSlider($category = '')
     {
         $slides = $this->getSlides($category);
         $slider = '';
-
         $i = 0;
         foreach ($slides as $slide) {
-            $slider .= '<bulma-slide :id="'.$i.'" image="'.$slide['photo'].'" '.($i==0 ? ':active="true"' : '').'>
-                <div class="container">
+            $slider .= '<slide id="slide-' . $i . '" image="' . $slide['photo'] . '" style="opacity: 0;" >
                     <section class="slide-content">'
-                            . ($slide['headline'] != '' ? '<p class="title slider-title">'.$slide['headline'].'</p>' : '')
-                            . ($slide['caption'] != '' ? '<p class="subtitle slider-subtitle">'.$slide['caption'].'</p>' : '')
-                            . ($slide['description'] != '' ? '<div class="slider-description">'.$slide['description'].'</div>' : '') .
-                        '</section>
-                    </div>
-                </bulma-slide>';
+                       . ($slide['headline'] != '' ? '<h2 class="slider-title">' . $slide['headline'] . '</h2>' : '')
+                       . ($slide['caption'] != '' ? '<p class="slider-subtitle">' . $slide['caption'] . '</p>' : '')
+                       . ($slide['description'] != '' ? '<div class="slider-description">' . $slide['description'] . '</div>' : '') .
+                       '</section>
+                </slide>';
             $i++;
         }
-
         return $slider;
     }
 }

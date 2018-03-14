@@ -17,12 +17,12 @@ include(locate_template('template-parts/sections/top.php'));
     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
         <div class="section" >
 
-            <bulma-slider>
+            <slider>
                     <?php
                         $slider = new BulmaSlider();
-                        echo $slider->getSlider('home-page-slider');
+                        echo $slider->getSlider('home-page-slideshow');
                     ?>
-            </bulma-slider>
+            </slider>
 
         </div>
     </article>
