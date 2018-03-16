@@ -18,9 +18,11 @@
   },
   "dependencies": {
     "autoprefixer": "^8.1.0",
+    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "glob": "^7.1.2",
     "google-maps": "^3.2.1",
+    "marker-clusterer-plus": "^2.1.4",
     "purgecss-webpack-plugin": "^0.20.1",
     "vue-parallax-js": "0.0.5",
     "vue-template-compiler": "^2.4.2"

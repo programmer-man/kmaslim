@@ -10,6 +10,7 @@
 
 <script>
     import GoogleMap from '../services/google-maps.service.js';
+    import axios from 'axios';
 
     export default {
         props: {
@@ -32,42 +33,58 @@
             api: {
                 type: String,
                 default: 'AIzaSyCRXeRhZCIYcKhtc-rfHCejAJsEW9rYtt4'
+            },
+            endPoint: {
+                type: String,
+                default: 'https://mothership.kerigan.com/api/v1/allMapListings'
             }
         },
 
         data: function () {
             return {
                 mapName: this.name + "-map",
-                markers: [],
                 config: {},
-                map: {}
+                errors: []
             }
         },
 
         mounted() {
             this.config = {
                 zoom: this.zoom,
-                origin: {}, //we don't know this yet
                 mapElement: this.$refs.map,
-                destination: {
+                center: {
                     latitude: this.latitude,
                     longitude: this.longitude
                 },
-                directionsButton: this.$refs.directionsButton,
-                directionsPanel: this.$refs.directionsPanel
+                markers: []
             };
-            this.renderMap();
+            this.getMarkers();
         },
 
         methods: {
             renderMap () {
                 let vm = this;
-                new GoogleMap(vm.config, vm.pins, vm.api)
+                const map = new GoogleMap(vm.config, vm.api)
                   .load()
                   .then(rendered => {
                       this.renderedMap = rendered;
-                  });
+                  })
+                  .catch(e => {
+                      this.errors.push(e)
+                  })
             },
+
+            getMarkers () {
+                axios.get(this.endPoint)
+                  .then(response => {
+                      this.config.markers = response.data
+                      this.renderMap();
+                  })
+                  .catch(e => {
+                      this.errors.push(e)
+                  })
+            }
+
         }
 
     }
